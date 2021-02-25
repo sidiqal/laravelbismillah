@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -18,5 +21,19 @@ use App\Http\Controllers\LoginController;
 //     return view('welcome');
 // });
 
-Route::get('/', [LoginController::class, 'show'])->name('login.show');
+Route::get('/', [LoginController::class, 'show'])->name('login');
 Route::post('/login', [LoginController::class, 'process'])->name('login.process');
+Route::get('/hash', [LoginController::class, 'hash'])->name('login.hash');
+Route::middleware('auth')->get('/dashboard', function() {
+    return view('dashboard');
+});
+
+Route::middleware('auth')->get('/logout', function(Request $request) {
+    Auth::logout();
+
+    $request->session()->invalidate();
+
+    $request->session()->regenerateToken();
+
+    return redirect('/');
+});
