@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,11 +18,5 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/user', function () {
-    $user = "Halo bro apa kabar";
-    return $user;
-});
+Route::get('/', [LoginController::class, 'show'])->name('login.show');
+Route::post('/login', [LoginController::class, 'process'])->name('login.process');
